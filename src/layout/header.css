@@ -1,0 +1,7 @@
+.nav-link {
+  @apply whitespace-nowrap cursor-pointer font-semibold py-1.5;
+}
+
+.header-menu__item {
+  @apply flex flex-row items-center py-2 px-3 hover:bg-slate-200 hover:cursor-pointer;
+}

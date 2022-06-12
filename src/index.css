@@ -1,13 +1,27 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer components {
+  .icon-sm {
+    @apply h-5 w-5;
+  }
+  .icon {
+    @apply h-10 w-10;
+  }
+  .btn {
+    @apply flex items-center justify-center px-2 py-3 rounded-lg gap-2;
+  }
+  .btn-outline {
+    @apply btn border-2 border-rose-500 bg-white text-rose-500 hover:bg-rose-500 hover:text-white;
+  }
+  .btn-contained {
+    @apply btn bg-rose-500 text-white;
+  }
+  .background {
+    /* background-image: url("./resources/images/authbg.svg"); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
 }
