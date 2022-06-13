@@ -1,11 +1,6 @@
 {
-  "cSpell.words": [
-    "Autosize",
-    "Civizen",
-    "cvzen",
-    "Esports",
-    "reduxjs",
-    "semibold"
-  ],
-  "editor.tabSize": 2
+  "cSpell.words": ["Autosize", "Civizen", "cvzen", "Esports", "reduxjs", "semibold"],
+  "editor.tabSize": 2,
+  "editor.wordWrapColumn": 120,
+  "prettier.printWidth": 120
 }
