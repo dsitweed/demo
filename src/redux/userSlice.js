@@ -1,92 +1,80 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const signUpUser = createAsyncThunk(
-  "users/signUp",
-  async ({ email, password, fullName }, thunkAPI) => {
-    try {
-      const response = await fetch("http://localhost:8000/api/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          fullName,
-        }),
-      });
-      let data = await response.json();
-      console.log("data", data);
+export const signUpUser = createAsyncThunk("users/signUp", async ({ email, password, fullName }, thunkAPI) => {
+  try {
+    const response = await fetch("http://localhost:8000/api/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        fullName,
+      }),
+    });
+    let data = await response.json();
+    console.log("data", data);
 
-      if (response.status === 200) {
-        localStorage.setItem("token", data.token);
-        return { ...data, email: email };
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      return thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      localStorage.setItem("token", data.token);
+      return { ...data, email: email };
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const signInUser = createAsyncThunk(
-  "users/signIn",
-  async ({ email, password }, thunkAPI) => {
-    try {
-      const response = await fetch("http://localhost:8000/api/signin", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      let data = await response.json();
-      if (response.status === 200) {
-        localStorage.setItem("token", data.token);
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+export const signInUser = createAsyncThunk("users/signIn", async ({ email, password }, thunkAPI) => {
+  try {
+    const response = await fetch("http://localhost:8000/api/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    let data = await response.json();
+    if (response.status === 200) {
+      document.cookie = `token=${data.token};`;
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const fetchUserByToken = createAsyncThunk(
-  "users/fetchUserByToken",
-  async ({ token }, thunkAPI) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/sign-in-by-token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        }
-      );
-      let data = await response.json();
-      if (response.status === 200) {
-        return { ...data };
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      return thunkAPI.rejectWithValue(e.response.data);
+export const fetchUserByToken = createAsyncThunk("users/fetchUserByToken", async ({ token }, thunkAPI) => {
+  try {
+    const response = await fetch("http://localhost:8000/api/sign-in-by-token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    });
+    let data = await response.json();
+    if (response.status === 200) {
+      return { ...data };
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
 export const userSlice = createSlice({
   name: "user",

@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Backdrop,
-  CircularProgress,
-  Divider,
-  IconButton as div,
-  Popover,
-} from "@mui/material";
+import { Avatar, Backdrop, CircularProgress, Divider, IconButton as div, Popover } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   MdOutlineAssignmentInd,
@@ -23,13 +16,7 @@ import "./header.css";
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isFetching, isError, isLoggedIn, errorMessage } =
-    useSelector(userSelector);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    dispatch(fetchUserByToken({ token }));
-  }, [dispatch]);
+  const { isFetching, isError, isLoggedIn, errorMessage } = useSelector(userSelector);
 
   const { fullName } = useSelector(userSelector);
 
@@ -88,12 +75,8 @@ function Header() {
                     className="flex flex-row items-center h-10 justify-center px-2 rounded-lg border-2 border-rose-500 bg-white-500 text-rose-500 hover:cursor-pointer hover:shadow-lg"
                     onClick={handleClick}
                   >
-                    <Avatar sx={{ width: 30, height: 30, bgcolor: "#f43f5e" }}>
-                      {fullName[0]}
-                    </Avatar>
-                    <span className="ml-2 text-semibold">
-                      {fullName || "Người dùng"}
-                    </span>
+                    <Avatar sx={{ width: 30, height: 30, bgcolor: "#f43f5e" }}>{fullName[0]}</Avatar>
+                    <span className="ml-2 text-semibold">{fullName || "Người dùng"}</span>
                   </div>
                   <Popover
                     open={open}
@@ -117,9 +100,7 @@ function Header() {
                       <div className="md:hidden">
                         <Link to="/my-cv" className=" header-menu__item ">
                           <MdOutlineListAlt className="icon-sm" />
-                          <span className="ml-2 whitespace-nowrap">
-                            CV của tôi
-                          </span>
+                          <span className="ml-2 whitespace-nowrap">CV của tôi</span>
                         </Link>
                         <Divider />
                       </div>
@@ -128,23 +109,15 @@ function Header() {
                         <span className="ml-2 whitespace-nowrap">Cài đặt</span>
                       </div>
                       <Divider />
-                      <div
-                        onClick={handleLogout}
-                        className="header-menu__item text-red-600"
-                      >
+                      <div onClick={handleLogout} className="header-menu__item text-red-600">
                         <MdOutlineLogout className="icon-sm" />
-                        <span className="ml-2 whitespace-nowrap ">
-                          Đăng xuất
-                        </span>
+                        <span className="ml-2 whitespace-nowrap ">Đăng xuất</span>
                       </div>
                     </div>
                   </Popover>
                 </>
               ) : (
-                <Link
-                  to="/auth/sign-in"
-                  className="font-semibold btn-contained h-10"
-                >
+                <Link to="/auth/sign-in" className="font-semibold btn-contained h-10">
                   Đăng nhập
                 </Link>
               )}

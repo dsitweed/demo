@@ -1,5 +1,9 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
+import { fetchUserByToken, userSelector } from "../redux/userSlice";
+import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
@@ -9,6 +13,17 @@ import Profile from "./Profile";
 import Templates from "./Templates";
 
 function App() {
+  const dispatch = useDispatch();
+  const { isFetching, isError, isLoggedIn } = useSelector(userSelector);
+
+  useEffect(() => {
+    const token = getCookie("token");
+    if (token) {
+      console.log(token);
+      // fetchUserByToken({token});
+    }
+  });
+
   return (
     <Routes>
       <Route

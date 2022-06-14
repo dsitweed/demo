@@ -1,6 +1,5 @@
 import {
   MdOutlineEmojiEvents,
-  MdOutlineGames,
   MdOutlineLightbulb,
   MdOutlinePsychology,
   MdOutlineSchool,
