@@ -173,37 +173,31 @@ const formTemplate = {
   },
 };
 
-function typeMapping(name, index, formField, register) {
-  if (formField.type === "text") {
-    return (
-      <input
-        className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`, {
-          required: formField.required,
-        })}
-        placeholder={formField.placeholder}
-      />
-    );
-  } else if (formField.type === "date") {
-    return (
-      <input
-        className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`, {
-          required: formField.required,
-        })}
-        type="date"
-      />
-    );
-  } else if (formField.type === "textarea") {
-    return (
-      <TextareaAutosize
-        className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`)}
-        placeholder={formField.placeholder}
-        minRows={5}
-      />
-    );
-  }
+function typeMapping(name, index, formField, initValue, register) {
+  return formField.type === "text" ? (
+    <input
+      className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
+      {...register(`${name}.${index}.${formField.field}`, {
+        value: initValue,
+      })}
+      placeholder={formField.placeholder}
+    />
+  ) : formField.type === "date" ? (
+    <input
+      className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
+      {...register(`${name}.${index}.${formField.field}`, {
+        required: formField.required,
+      })}
+      type="date"
+    />
+  ) : (
+    <TextareaAutosize
+      className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
+      {...register(`${name}.${index}.${formField.field}`)}
+      placeholder={formField.placeholder}
+      minRows={5}
+    />
+  );
 }
 
 export { typeMapping };

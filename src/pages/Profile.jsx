@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { infoSelector } from "../redux/infoSlide";
 import formTemplate from "../template/formTemplate";
 import Form from "./components/Form";
 
@@ -6,6 +8,9 @@ const formList = Object.values(formTemplate);
 
 const Profile = () => {
   const [selected, setSelected] = useState("profile");
+  const dispatch = useDispatch();
+  const info = useSelector(infoSelector);
+
   return (
     <div className="flex flex-col bg-slate-100 py-4 px-2 md:px-4 min-h-[calc(100vh-64px)]">
       <div
