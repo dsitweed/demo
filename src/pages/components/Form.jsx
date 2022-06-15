@@ -58,14 +58,34 @@ const Form = ({ name, title, formFields }) => {
                 <input
                   className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
                   {...register(`${name}.${index}.${formField.field}`, {
-                    required: formField.required,
+                    value: info[name].items[index][formField.field],
+                    onBlur: () => {
+                      dispatch(
+                        updateInfo({
+                          name,
+                          path: `${name}.items[${index}].${formField.field}`,
+                          value: watch(`${name}.${index}.${formField.field}`),
+                        })
+                      );
+                    },
                   })}
                   type="date"
                 />
               ) : (
                 <TextareaAutosize
                   className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
-                  {...register(`${name}.${index}.${formField.field}`)}
+                  {...register(`${name}.${index}.${formField.field}`, {
+                    value: info[name].items[index][formField.field],
+                    onBlur: () => {
+                      dispatch(
+                        updateInfo({
+                          name,
+                          path: `${name}.items[${index}].${formField.field}`,
+                          value: watch(`${name}.${index}.${formField.field}`),
+                        })
+                      );
+                    },
+                  })}
                   placeholder={formField.placeholder}
                   minRows={5}
                 />
