@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { infoSelector } from "../redux/infoSlide";
 import formTemplate from "../template/formTemplate";
 import Form from "./components/Form";
 import { useNavigate } from "react-router-dom";
@@ -10,15 +8,7 @@ const formList = Object.values(formTemplate);
 
 const Profile = () => {
   const [selected, setSelected] = useState("profile");
-  const dispatch = useDispatch();
-  const info = useSelector(infoSelector);
-  const navigate = useNavigate();
-  const { isLoggedIn, cvDatas } = useSelector(userSelector);
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/auth/unauthorized");
-    }
-  }, [isLoggedIn, navigate]);
+
 
   return (
     <div className="flex flex-col bg-slate-100 py-4 px-2 md:px-4 min-h-[calc(100vh-64px)]">

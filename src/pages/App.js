@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
-import { fetchUserByToken, userSelector } from "../redux/userSlice";
+import { checkLoggedIn, fetchUserByToken, getInfo, userSelector } from "../redux/userSlice";
 import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
@@ -18,12 +18,11 @@ function App() {
   const { isFetching, isError, isLoggedIn } = useSelector(userSelector);
 
   useEffect(() => {
-    const token = getCookie("token");
-    if (token) {
-      console.log(token);
-      // fetchUserByToken({token});
+    dispatch(checkLoggedIn());
+    if (isLoggedIn) {
+      dispatch(getInfo());
     }
-  });
+  }, [isLoggedIn]);
 
   return (
     <Routes>
