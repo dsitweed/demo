@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userSelector } from "../redux/userSlice";
 import formTemplate from "../template/formTemplate";
 import Form from "./components/Form";
 
@@ -6,6 +9,15 @@ const formList = Object.values(formTemplate);
 
 const Profile = () => {
   const [selected, setSelected] = useState("profile");
+  const nagavite = useNavigate();
+  const {isLoggedIn} = useSelector(userSelector);
+  
+  useEffect(() => {
+    if (!isLoggedIn){
+      nagavite("/");
+    }
+  }, [isLoggedIn]);
+
   return (
     <div className="flex flex-col bg-slate-100 py-4 px-2 md:px-4 min-h-[calc(100vh-64px)]">
       <div

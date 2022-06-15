@@ -9,7 +9,7 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { clearState, fetchUserByToken, userSelector } from "../redux/userSlice";
+import { clearState, fetchUserByToken, signOut, userSelector } from "../redux/userSlice";
 import LOGO from "../resources/images/logo.png";
 import "./header.css";
 
@@ -38,17 +38,13 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    dispatch(signOut());
     navigate("/auth/sign-in");
   };
 
   const open = Boolean(anchorEl);
 
-  return isFetching ? (
-    <Backdrop open={true} sx={{ zIndex: "99" }}>
-      <CircularProgress />
-    </Backdrop>
-  ) : (
+  return (
     <>
       <header className="sticky h-16 top-0 left-0 right-0 z-50 bg-white border-slate-100">
         <div className="mx-auto my-1 px-2 sm:px-6">

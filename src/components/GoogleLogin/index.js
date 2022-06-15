@@ -1,8 +1,13 @@
 import { Tooltip } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userSlice } from "../../redux/userSlice";
 
 function GoogleLogin() {
   const [success, setSuccess] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleCredentialResponse = async (response) => {
     console.log("Encoded JWT ID token: " + response.credential);
@@ -24,6 +29,8 @@ function GoogleLogin() {
       console.log(data);
       if (res.status === 200) {
         setSuccess(true);
+        dispatch(userSlice.actions.setLogin());
+        navigate("/");
       } else {
         if (res.status === 401) {
           setSuccess(false);
@@ -51,7 +58,7 @@ function GoogleLogin() {
     return () => {
       document.body.removeChild(script);
     };
-  });
+  },[]);
 
   return (
     <Tooltip title="Đăng nhập bằng google">
