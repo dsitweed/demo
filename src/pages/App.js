@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
-import { checkLoggedIn, fetchUserByToken, getInfo, userSelector } from "../redux/userSlice";
+import { checkLoggedIn, fetchUserByToken, userSelector } from "../redux/userSlice";
+import { getInfoServer } from "../redux/infoSlide";
 import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
@@ -19,10 +20,13 @@ function App() {
 
   useEffect(() => {
     dispatch(checkLoggedIn());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isLoggedIn) {
-      dispatch(getInfo());
+      dispatch(getInfoServer());
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, dispatch]);
 
   return (
     <Routes>

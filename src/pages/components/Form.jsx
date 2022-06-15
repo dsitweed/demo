@@ -1,19 +1,15 @@
-import React from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { TextareaAutosize } from "@mui/material";
+import { useFieldArray, useForm } from "react-hook-form";
 import { MdOutlineAdd, MdOutlineDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { typeMapping } from "../../template/formTemplate";
-import { infoSelector, updateInfo } from "../../redux/infoSlide";
-import { TextareaAutosize } from "@mui/material";
+import { addItem, infoSelector, removeItem, updateInfo, updateInfoServer } from "../../redux/infoSlide";
+
 const Form = ({ name, title, formFields }) => {
   const dispatch = useDispatch();
   const info = useSelector(infoSelector);
-  const { register, control, handleSubmit, watch } = useForm({ defaultValues: { [name]: [{}] } });
+  const { register, control, handleSubmit, watch } = useForm({ defaultValues: { [name]: info[name]?.items } });
   const { fields, append, remove } = useFieldArray({ control, name });
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  console.log("FORM", name, title);
+  const onSubmit = () => {};
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col"}>
       {fields.map((item, index) => (
@@ -23,12 +19,21 @@ const Form = ({ name, title, formFields }) => {
         >
           {/* Hành động */}
           <div className="w-full md:col-span-2 flex flex-row justify-end gap-2">
-            <button className="p-2 rounded-full bg-slate-200" onClick={() => append({})}>
+            <button
+              className="p-2 rounded-full bg-slate-200"
+              onClick={() => {
+                append({});
+                dispatch(addItem(name));
+              }}
+            >
               <MdOutlineAdd className="icon-sm" />
             </button>
             <button
               className={`p-2 rounded-full bg-slate-200 ${fields.length === 1 && "hidden"}`}
-              onClick={() => remove(index)}
+              onClick={() => {
+                remove(index);
+                dispatch(removeItem({ name, index }));
+              }}
             >
               <MdOutlineDelete className="icon-sm" />
             </button>
@@ -41,8 +46,8 @@ const Form = ({ name, title, formFields }) => {
                 <input
                   className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
                   {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name].items[index][formField.field],
-                    onBlur: () => {
+                    value: info[name]?.items[index][formField.field],
+                    onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
@@ -58,8 +63,8 @@ const Form = ({ name, title, formFields }) => {
                 <input
                   className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
                   {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name].items[index][formField.field],
-                    onBlur: () => {
+                    value: info[name]?.items[index][formField.field],
+                    onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
@@ -75,8 +80,8 @@ const Form = ({ name, title, formFields }) => {
                 <TextareaAutosize
                   className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
                   {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name].items[index][formField.field],
-                    onBlur: () => {
+                    value: info[name]?.items[index][formField.field],
+                    onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
@@ -94,10 +99,6 @@ const Form = ({ name, title, formFields }) => {
           ))}
         </fieldset>
       ))}
-
-      <button type="submit" className="my-5 px-6 btn-contained col-span-2 mx-auto">
-        Cập nhật
-      </button>
     </form>
   );
 };

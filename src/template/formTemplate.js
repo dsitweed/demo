@@ -6,24 +6,28 @@ import {
   MdOutlineSportsEsports,
   MdWorkOutline,
   MdOutlinePerson,
+  MdOutlineBatchPrediction,
+  MdOutlineWorkspaces,
+  MdOutlineFactCheck,
+  MdOutlineLocalLibrary,
 } from "react-icons/md";
-import { TextareaAutosize } from "@mui/material";
 
+// TODO: bỏ objectives
 const formTemplate = {
   profile: {
     name: "profile",
-    title: "Thông tin chung",
-    icon: <MdOutlinePerson className="icon-sm"/>,
+    title: "Thông tin",
+    icon: <MdOutlinePerson className="icon-sm" />,
     formFields: [
       {
-        field: "fullname",
+        field: "fullName",
         title: "Họ và tên",
         placeholder: "Họ và tên đầy đủ của bạn",
         type: "text",
         required: true,
       },
       {
-        field: "birth",
+        field: "birthDate",
         title: "Ngày sinh",
         placeholder: "Ngày sinh của bạn",
         type: "date",
@@ -34,43 +38,36 @@ const formTemplate = {
         title: "Địa chỉ",
         placeholder: "Địa chỉ của bạn",
         type: "text",
-        required: false,
       },
       {
         field: "email",
         title: "Email",
         placeholder: "Địa chỉ email của bạn",
         type: "text",
-        required: true,
       },
       {
-        field: "github",
-        title: "Github",
-        placeholder: "Link github",
+        field: "phone",
+        title: "Số điện thoại",
+        placeholder: "Số điện thoại của bạn",
         type: "text",
-        required: false,
       },
       {
-        field: "facebook",
-        title: "Facebook",
-        placeholder: "Link facebook",
+        field: "website",
+        title: "Trang web",
+        placeholder: "Trang web cá nhân của bạn",
         type: "text",
-        required: false,
       },
-      
-    ]
-  },
-  objectives: {
-    name: "objectives",
-    title: "Mục tiêu",
-    icon: <MdOutlineLightbulb className="icon-sm" />,
-    formFields: [
       {
-        field: "text",
-        title: "Mục tiêu:",
-        placeholder: "Hãy điền mục tiêu của bạn",
+        field: "job",
+        title: "Chức vụ",
+        placeholder: "Chức vụ của bạn",
+        type: "text",
+      },
+      {
+        field: "summary",
+        title: "Mô tả bản thân",
+        placeholder: "Mô tả chi tiết",
         type: "textarea",
-        required: true,
       },
     ],
   },
@@ -163,14 +160,18 @@ const formTemplate = {
         title: "Kỹ năng:",
         placeholder: "Kỹ năng",
         type: "text",
-        required: true,
       },
       {
         field: "description",
         title: "Mô tả chi tiết:",
         placeholder: "Mô tả chi tiết",
         type: "textarea",
-        required: true,
+      },
+      {
+        field: "rating",
+        title: "Đánh giá:",
+        placeholder: "Đánh giá",
+        type: "text",
       },
     ],
   },
@@ -185,6 +186,35 @@ const formTemplate = {
         placeholder: "Mô tả sở thích",
         type: "textarea",
         required: true,
+      },
+    ],
+  },
+  projects: {
+    name: "projects",
+    title: "Dự án",
+    icon: <MdOutlineBatchPrediction className="icon-sm" />,
+    formFields: [
+      {
+        field: "title",
+        title: "Dự án:",
+        placeholder: "Dự án",
+        type: "text",
+      },
+      {
+        field: "org",
+        title: "Tổ chức:",
+        placeholder: "Tổ chức",
+        type: "text",
+      },
+      {
+        field: "startDate",
+        title: "Ngày bắt đầu:",
+        type: "date",
+      },
+      {
+        field: "endDate",
+        title: "Ngày kết thúc:",
+        type: "date",
       },
     ],
   },
@@ -222,68 +252,47 @@ const formTemplate = {
       },
     ],
   },
+  certifications: {
+    name: "certifications",
+    title: "Chứng nhận",
+    icon: <MdOutlineFactCheck className="icon-sm" />,
+    formFields: [
+      {
+        field: "certName",
+        title: "Chứng nhận:",
+        placeholder: "Chứng nhận",
+        type: "text",
+      },
+      {
+        field: "date",
+        title: "Ngày cấp:",
+        type: "date",
+      },
+    ],
+  },
+  results: {
+    name: "results",
+    title: "Kết quả",
+    icon: <MdOutlineLocalLibrary className="icon-sm" />,
+    formFields: [
+      {
+        field: "subject",
+        title: "Môn học:",
+        placeholder: "Môn học",
+        type: "text",
+      },
+      {
+        field: "processGrade",
+        title: "Điểm quá trình:",
+        type: "date",
+      },
+      {
+        field: "finalGrade",
+        title: "Điểm cuối kỳ:",
+        type: "date",
+      },
+    ],
+  },
 };
-
-function typeMapping(name, index, formField, register) {
-
-  if (formField.type === "text") {
-    return (
-      <input
-        className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`, {
-          required: formField.required,
-        })}
-        placeholder={ formField.placeholder}
-      />
-    );
-  } else if (formField.type === "date") {
-    return (
-      <input
-        className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`, {
-          required: formField.required,
-        })}
-        type="date"
-      />
-    );
-  } else if (formField.type === "textarea") {
-    return (
-      <TextareaAutosize
-        className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
-        {...register(`${name}.${index}.${formField.field}`)}
-        placeholder={formField.placeholder}
-        minRows={5}
-      />
-    );
-  }
-=======
-function typeMapping(name, index, formField, initValue, register) {
-  return formField.type === "text" ? (
-    <input
-      className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-      {...register(`${name}.${index}.${formField.field}`, {
-        value: initValue,
-      })}
-      placeholder={formField.placeholder}
-    />
-  ) : formField.type === "date" ? (
-    <input
-      className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-      {...register(`${name}.${index}.${formField.field}`, {
-        required: formField.required,
-      })}
-      type="date"
-    />
-  ) : (
-    <TextareaAutosize
-      className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
-      {...register(`${name}.${index}.${formField.field}`)}
-      placeholder={formField.placeholder}
-      minRows={5}
-    />
-  );
-}
-
-export { typeMapping };
 
 export default formTemplate;

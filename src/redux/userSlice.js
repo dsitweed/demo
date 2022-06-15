@@ -1,309 +1,279 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Kiem tra user đã đăng nhập chưa, cookie còn hạn hay không
-export const checkLoggedIn = createAsyncThunk(
-  "users/checkLoggedIn",
-  async ( thunkAPI ) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/logined`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      let data = await response.json();
-      // console.log("data", data);
+export const checkLoggedIn = createAsyncThunk("users/checkLoggedIn", async (thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/logined`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    let data = await response.json();
+    // console.log("data", data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      return thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const signUpUser = createAsyncThunk(
-  "users/signUp",
-  async ({ email, password, fullName }, thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/api/signup`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          fullName,
-        }),
-      });
-      let data = await response.json();
-      console.log("data", data);
+export const signUpUser = createAsyncThunk("users/signUp", async ({ email, password, fullName }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/api/signup`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        fullName,
+      }),
+    });
+    let data = await response.json();
+    console.log("data", data);
 
-      if (response.status === 200) {
-        localStorage.setItem("token", data.token);
-        return { ...data, email: email };
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      return thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      localStorage.setItem("token", data.token);
+      return { ...data, email: email };
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    return thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const signInUser = createAsyncThunk(
-  "users/signIn",
-  async ({ email, password }, thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/api/signin`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      let data = await response.json();
-      if (response.status === 200) {
-        // localStorage.setItem("token", data.token);
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+export const signInUser = createAsyncThunk("users/signIn", async ({ email, password }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/api/signin`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    let data = await response.json();
+    if (response.status === 200) {
+      // localStorage.setItem("token", data.token);
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const signOut = createAsyncThunk(
-  "users/signOut",
-  async (thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/api/signout`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      let data = await response.json();
-      console.log(data);
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+export const signOut = createAsyncThunk("users/signOut", async (thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/api/signout`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    let data = await response.json();
+    console.log(data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const changePassword = createAsyncThunk(
-  "users/changePassword",
-  async ({password, newPassword},thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/change_password`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          password,
-          newPassword,
-        }),
-      });
-      let data = await response.json();
-      console.log(data);
+export const changePassword = createAsyncThunk("users/changePassword", async ({ password, newPassword }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/change_password`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        password,
+        newPassword,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const getInfo = createAsyncThunk(
-  "users/getInfo",
-  async (thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
+export const getInfo = createAsyncThunk("users/getInfo", async (thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
 
-      const response = await fetch(`http://localhost:8000/users/get_info`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      let data = await response.json();
-      
-      if (response.status === 200) {
-        // console.log(data);
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    const response = await fetch(`${URL}/users/get_info`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    let data = await response.json();
+
+    if (response.status === 200) {
+      // console.log(data);
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const updateInfo = createAsyncThunk(
-  "users/updateInfo",
-  async ({info},thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/update_info`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          info,
-        }),
-      });
-      let data = await response.json();
-      console.log(data);
+export const updateInfo = createAsyncThunk("users/updateInfo", async ({ info }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/update_info`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        info,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 // Cần xem xét thêm
 // Lấy thông tin email => gửi mail xác thực => sang trang xác thực => đôi mật khẩu mới
-export const forgetPassword = createAsyncThunk(
-  "users/forgetPassword",
-  async ({email},thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/forget_password`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
-      });
-      let data = await response.json();
-      console.log(data);
+export const forgetPassword = createAsyncThunk("users/forgetPassword", async ({ email }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/forget_password`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const checkFpsSession = createAsyncThunk(
-  "users/checkFpsSession",
-  async ({ token },thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/check_fps_session`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-        }),
-      });
-      let data = await response.json();
-      console.log(data);
+export const checkFpsSession = createAsyncThunk("users/checkFpsSession", async ({ token }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/check_fps_session`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-export const changeForgottenPwd = createAsyncThunk(
-  "users/changeForgottenPwd",
-  async ({ token, newPwd },thunkAPI) => {
-    try {
-      const URL = process.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${URL}/users/change_forgotten_pwd`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          newPwd,
-        }),
-      });
-      let data = await response.json();
-      console.log(data);
+export const changeForgottenPwd = createAsyncThunk("users/changeForgottenPwd", async ({ token, newPwd }, thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/change_forgotten_pwd`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+        newPwd,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
 
-      if (response.status === 200) {
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (e) {
-      console.log("Error", e.response.data);
-      thunkAPI.rejectWithValue(e.response.data);
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
     }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
   }
-);
+});
 
-/*-----------------------------------------------------------------------------------*/ 
+/*-----------------------------------------------------------------------------------*/
 
 export const userSlice = createSlice({
   name: "user",
@@ -313,12 +283,12 @@ export const userSlice = createSlice({
     cvDatas: [],
     infoData: {
       profile: {},
-      objectives:{},
+      objectives: {},
       work: {},
-      education:{},
+      education: {},
       skills: {},
-      hobbies:{},
-      awards:{},
+      hobbies: {},
+      awards: {},
     },
     isLoggedIn: false,
     isFetching: false,
@@ -331,7 +301,7 @@ export const userSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isFetching = false;
-      return state;// why have to return
+      return state; // why have to return
     },
     setLogin: (state) => {
       state.isLoggedIn = true;
@@ -372,7 +342,7 @@ export const userSlice = createSlice({
     builder.addCase(signInUser.pending, (state) => {
       state.isFetching = true;
     });
-    // sign out 
+    // sign out
     builder.addCase(signOut.fulfilled, (state) => {
       state.isError = false;
       state.isSuccess = true;
@@ -382,7 +352,7 @@ export const userSlice = createSlice({
     builder.addCase(signOut.pending, (state) => {
       state.isFetching = true;
     });
-    builder.addCase(signOut.rejected, (state, {payload}) => {
+    builder.addCase(signOut.rejected, (state, { payload }) => {
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;
@@ -414,13 +384,13 @@ export const userSlice = createSlice({
     builder.addCase(changePassword.pending, (state) => {
       state.isFetching = true;
     });
-    builder.addCase(changePassword.rejected, (state, {payload}) => {
+    builder.addCase(changePassword.rejected, (state, { payload }) => {
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;
     });
     // get info
-    builder.addCase(getInfo.fulfilled, (state, {payload}) => {
+    builder.addCase(getInfo.fulfilled, (state, { payload }) => {
       // console.log("Payload: ", payload);
       state.infoDatas = payload.result;
       state.isError = false;
@@ -431,7 +401,7 @@ export const userSlice = createSlice({
     builder.addCase(getInfo.pending, (state) => {
       state.isFetching = true;
     });
-    builder.addCase(getInfo.rejected, ({payload},state) => {
+    builder.addCase(getInfo.rejected, ({ payload }, state) => {
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;

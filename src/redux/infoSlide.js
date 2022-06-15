@@ -1,47 +1,127 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { get, set } from "lodash";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { set } from "lodash";
+
+export const getInfoServer = createAsyncThunk("info/getInfo", async (thunkAPI) => {
+  try {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    console.log("Fetch", `${URL}/users/get_info`);
+    const response = await fetch(`${URL}/users/get_info`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    let data = await response.json();
+
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
+    }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
+  }
+});
+
+export const updateInfoServer = createAsyncThunk("info/updateInfo", async ({ info }, thunkAPI) => {
+  try {
+    console.log(info);
+    const URL = process.env.REACT_APP_BACKEND_URL;
+    const response = await fetch(`${URL}/users/update_info`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        info,
+      }),
+    });
+    let data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
+    }
+  } catch (e) {
+    console.log("Error", e.response.data);
+    thunkAPI.rejectWithValue(e.response.data);
+  }
+});
 
 const infoSlide = createSlice({
   name: "info",
   initialState: {
-    objectives: [],
-    work: {
-      id: "work",
-      heading: "Kinh nghiệm",
-      visible: true,
-      items: [
-        {
-          company: "BKC LAB",
-          position: "Lập trình viên full stack",
-          startDate: "2021/08/01",
-          endDate: "2021/08/02",
-          summary: "111111111111111111111111111111111111111111",
-        },
-        {
-          company: "Hanoi university of science and technology",
-          position: "Lập trình viên full stack",
-          startDate: "2021/08/01",
-          endDate: "2021/08/02",
-          summary: "111111111111111111111111111111111111111111",
-        },
-      ],
-    },
-    education: [],
-    skills: [],
-    hobbies: [],
-    awards: [],
+    isFetching: false,
+    isSuccess: false,
+    isError: false,
+    errorMessage: "",
+    objectives: { items: [{}] },
+    work: { items: [{}] },
+    education: { items: [{}] },
+    skills: { items: [{}] },
+    hobbies: { items: [{}] },
+    awards: { items: [{}] },
   },
   reducers: {
-    updateInfo: (state, { payload }) => {
-      console.log(get(state, payload.path, payload.value));
-      set(state, payload.path, payload.value);
-      console.log(get(state, payload.path, payload.value));
+    clearState: (state) => {
+      state.isError = false;
+      state.isSuccess = false;
+      state.isFetching = false;
     },
+    updateInfo: (state, { payload }) => {
+      set(state, payload.path, payload.value);
+    },
+    addItem: (state, { payload }) => {
+      state[payload]?.items.push({});
+    },
+    removeItem: (state, { payload }) => {
+      state[payload.name].items = state[payload.name].items.splice(payload.index, 1);
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getInfoServer.fulfilled, (state, { payload }) => {
+      console.log("Payload: ", payload);
+      if (payload === {}) {
+      }
+      state.work = payload.work;
+      state.education = payload.education;
+      state.objectives = payload.objectives;
+      state.isError = false;
+      state.isSuccess = true;
+      state.isFetching = false;
+    });
+    builder.addCase(getInfoServer.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(getInfoServer.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
+    builder.addCase(updateInfoServer.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(updateInfoServer.fulfilled, (state, { payload }) => {
+      state.isSuccess = true;
+      console.log(payload);
+    });
+    builder.addCase(updateInfoServer.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
   },
 });
 
 export const infoSelector = (state) => state.info;
 
-export const { updateInfo } = infoSlide.actions;
+export const { clearState, updateInfo, addItem, removeItem } = infoSlide.actions;
 
 export default infoSlide;
