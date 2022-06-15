@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { get, set } from "lodash";
+
 const infoSlide = createSlice({
   name: "info",
   initialState: {
