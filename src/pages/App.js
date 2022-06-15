@@ -7,6 +7,7 @@ import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
+import Unauthorized from "./auth/Unauthorized";
 import Home from "./Home";
 import MyCv from "./MyCv";
 import Profile from "./Profile";
@@ -41,6 +42,7 @@ function App() {
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
       </Route>
     </Routes>
   );
