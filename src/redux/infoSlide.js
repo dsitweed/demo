@@ -16,6 +16,7 @@ export const getInfoServer = createAsyncThunk("info/getInfo", async (thunkAPI) =
     let data = await response.json();
 
     if (response.status === 200) {
+      console.log(data);
       return data;
     } else {
       return thunkAPI.rejectWithValue(data);
@@ -62,12 +63,16 @@ const infoSlide = createSlice({
     isSuccess: false,
     isError: false,
     errorMessage: "",
-    objectives: { items: [{}] },
     work: { items: [{}] },
     education: { items: [{}] },
     skills: { items: [{}] },
     hobbies: { items: [{}] },
+    projects: { items: [{}] },
     awards: { items: [{}] },
+    certifications: { items: [{}] },
+    results: { items: [{}] },
+    publications: { items: [{}] },
+    activities: { items: [{}] },
   },
   reducers: {
     clearState: (state) => {
@@ -92,7 +97,6 @@ const infoSlide = createSlice({
       }
       state.work = payload.work;
       state.education = payload.education;
-      state.objectives = payload.objectives;
       state.isError = false;
       state.isSuccess = true;
       state.isFetching = false;

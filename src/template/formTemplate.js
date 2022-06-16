@@ -1,76 +1,74 @@
 import {
+  MdOutlineBatchPrediction,
+  MdOutlineBiotech,
   MdOutlineEmojiEvents,
-  MdOutlineLightbulb,
+  MdOutlineFactCheck,
+  MdOutlineLocalLibrary,
+  MdOutlinePerson,
+  MdOutlineWaterDrop,
   MdOutlinePsychology,
   MdOutlineSchool,
   MdOutlineSportsEsports,
   MdWorkOutline,
-  MdOutlinePerson,
-  MdOutlineBatchPrediction,
-  MdOutlineWorkspaces,
-  MdOutlineFactCheck,
-  MdOutlineLocalLibrary,
 } from "react-icons/md";
 
-// TODO: bỏ objectives
 const formTemplate = {
-  profile: {
-    name: "profile",
-    title: "Thông tin",
-    icon: <MdOutlinePerson className="icon-sm" />,
-    formFields: [
-      {
-        field: "fullName",
-        title: "Họ và tên",
-        placeholder: "Họ và tên đầy đủ của bạn",
-        type: "text",
-        required: true,
-      },
-      {
-        field: "birthDate",
-        title: "Ngày sinh",
-        placeholder: "Ngày sinh của bạn",
-        type: "date",
-        required: false,
-      },
-      {
-        field: "address",
-        title: "Địa chỉ",
-        placeholder: "Địa chỉ của bạn",
-        type: "text",
-      },
-      {
-        field: "email",
-        title: "Email",
-        placeholder: "Địa chỉ email của bạn",
-        type: "text",
-      },
-      {
-        field: "phone",
-        title: "Số điện thoại",
-        placeholder: "Số điện thoại của bạn",
-        type: "text",
-      },
-      {
-        field: "website",
-        title: "Trang web",
-        placeholder: "Trang web cá nhân của bạn",
-        type: "text",
-      },
-      {
-        field: "job",
-        title: "Chức vụ",
-        placeholder: "Chức vụ của bạn",
-        type: "text",
-      },
-      {
-        field: "summary",
-        title: "Mô tả bản thân",
-        placeholder: "Mô tả chi tiết",
-        type: "textarea",
-      },
-    ],
-  },
+  // profile: {
+  //   name: "profile",
+  //   title: "Thông tin",
+  //   icon: <MdOutlinePerson className="icon-sm" />,
+  //   formFields: [
+  //     {
+  //       field: "fullName",
+  //       title: "Họ và tên",
+  //       placeholder: "Họ và tên đầy đủ của bạn",
+  //       type: "text",
+  //       required: true,
+  //     },
+  //     {
+  //       field: "birthDate",
+  //       title: "Ngày sinh",
+  //       placeholder: "Ngày sinh của bạn",
+  //       type: "date",
+  //     },
+  //     {
+  //       field: "address",
+  //       title: "Địa chỉ",
+  //       placeholder: "Địa chỉ của bạn",
+  //       type: "text",
+  //     },
+  //     {
+  //       field: "email",
+  //       title: "Email",
+  //       placeholder: "Địa chỉ email của bạn",
+  //       type: "text",
+  //     },
+  //     {
+  //       field: "phone",
+  //       title: "Số điện thoại",
+  //       placeholder: "Số điện thoại của bạn",
+  //       type: "text",
+  //     },
+  //     {
+  //       field: "website",
+  //       title: "Trang web",
+  //       placeholder: "Trang web cá nhân của bạn",
+  //       type: "text",
+  //     },
+  //     {
+  //       field: "job",
+  //       title: "Chức vụ",
+  //       placeholder: "Chức vụ của bạn",
+  //       type: "text",
+  //     },
+  //     {
+  //       field: "summary",
+  //       title: "Mô tả bản thân",
+  //       placeholder: "Mô tả chi tiết",
+  //       type: "textarea",
+  //     },
+  //   ],
+  // },
   work: {
     name: "work",
     title: "Kinh nghiệm",
@@ -284,11 +282,53 @@ const formTemplate = {
       {
         field: "processGrade",
         title: "Điểm quá trình:",
-        type: "date",
+        type: "text",
       },
       {
         field: "finalGrade",
         title: "Điểm cuối kỳ:",
+        type: "text",
+      },
+    ],
+  },
+  publications: {
+    name: "publications",
+    title: "Nghiên cứu",
+    icon: <MdOutlineBiotech className="icon-sm" />,
+    formFields: [
+      {
+        field: "title",
+        title: "Nghiên cứu:",
+        placeholder: "Nghiên cứu",
+        type: "text",
+      },
+      {
+        field: "page",
+        title: "Link bài nghiên cứu:",
+        placeholder: "Link bài nghiên cứu",
+        type: "text",
+      },
+      {
+        field: "publishDate",
+        title: "Thời gian:",
+        type: "date",
+      },
+    ],
+  },
+  activities: {
+    name: "activities",
+    title: "Hoạt động",
+    icon: <MdOutlineWaterDrop className="icon-sm" />,
+    formFields: [
+      {
+        field: "title",
+        title: "Hoạt động:",
+        placeholder: "Hoạt động",
+        type: "text",
+      },
+      {
+        field: "joinedDate",
+        title: "Thời gian:",
         type: "date",
       },
     ],

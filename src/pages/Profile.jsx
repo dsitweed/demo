@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearState, getInfoServer, infoSelector, updateInfoServer } from "../redux/infoSlide";
 import formTemplate from "../template/formTemplate";
 import Form from "./components/Form";
-
+import { MdOutlinePerson } from "react-icons/md";
+import ProfileForm from "./components/ProfileForm";
 const formList = Object.values(formTemplate);
 
 const Profile = () => {
@@ -14,7 +15,6 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getInfoServer());
   }, [dispatch]);
-  console.log(selected);
   const handleUpdate = () => {
     const { isError, isFetching, isSuccess, errorMessage, ...submitInfo } = info;
     console.log(submitInfo);
@@ -26,6 +26,17 @@ const Profile = () => {
         <div
           className={`bg-white flex flex-row justify-between py-4 px-1 md:px-3 rounded-lg text-slate-500 mb-6 overflow-x-scroll md:flex-wrap md:overflow-x-hidden`}
         >
+          <button
+            onClick={() => setSelected("profile")}
+            className={`rounded-lg p-2 min-w-[120px] flex flex-col items-center ${
+              selected === "profile" ? "text-white bg-rose-500" : "hover:text-rose-300 "
+            }`}
+          >
+            <span className="mb-1">
+              <MdOutlinePerson className="icon-sm" />
+            </span>
+            <span className="font-semibold">Thông tin</span>
+          </button>
           {formList.map((form) => (
             <button
               onClick={() => setSelected(form.name)}
@@ -39,7 +50,10 @@ const Profile = () => {
             </button>
           ))}
         </div>
-        <div>{formList.map((form) => (form.name === selected ? <Form {...form} /> : null))}</div>
+        <div>
+          {selected === "profile" ? <ProfileForm /> : null}
+          {formList.map((form) => (form.name === selected ? <Form {...form} key={form.name} /> : null))}
+        </div>
         <button onClick={handleUpdate}>Cập nhật</button>
       </div>
       <Snackbar
