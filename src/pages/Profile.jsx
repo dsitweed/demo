@@ -1,10 +1,10 @@
-import { Alert, Slide, Snackbar } from "@mui/material";
+import { Alert, Slide, Snackbar, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
+import { MdOutlinePerson } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { clearState, getInfoServer, infoSelector, updateInfoServer } from "../redux/infoSlide";
 import formTemplate from "../template/formTemplate";
 import Form from "./components/Form";
-import { MdOutlinePerson } from "react-icons/md";
 import ProfileForm from "./components/ProfileForm";
 const formList = Object.values(formTemplate);
 
@@ -16,9 +16,8 @@ const Profile = () => {
     dispatch(getInfoServer());
   }, [dispatch]);
   const handleUpdate = () => {
-    const { isError, isFetching, isSuccess, errorMessage, ...submitInfo } = info;
-    console.log(submitInfo);
-    dispatch(updateInfoServer({ info: submitInfo }));
+    const { data } = info;
+    dispatch(updateInfoServer({ info: data }));
   };
   return (
     <>
@@ -54,15 +53,29 @@ const Profile = () => {
           {selected === "profile" ? <ProfileForm /> : null}
           {formList.map((form) => (form.name === selected ? <Form {...form} key={form.name} /> : null))}
         </div>
-        <button onClick={handleUpdate}>Cập nhật</button>
+        <button
+          type="submit"
+          className="flex justify-center items-center mx-auto w-1/3 p-3 text-center bg-rose-500 text-white rounded"
+          onClick={handleUpdate}
+        >
+          {info.loading === "pending" ? <CircularProgress color="inherit" size={"20px"} /> : <span>Cập nhật</span>}
+        </button>
       </div>
       <Snackbar
-        open={info.isSuccess}
+        open={info.loading === "succeeded"}
         autoHideDuration={4000}
         TransitionComponent={Slide}
         onClose={() => dispatch(clearState())}
       >
         <Alert severity="success">Lưu thành công</Alert>
+      </Snackbar>
+      <Snackbar
+        open={info.loading === "failed"}
+        autoHideDuration={4000}
+        TransitionComponent={Slide}
+        onClose={() => dispatch(clearState())}
+      >
+        <Alert severity="error">Có lỗi xảy ra</Alert>
       </Snackbar>
     </>
   );

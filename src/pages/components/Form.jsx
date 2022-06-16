@@ -1,13 +1,12 @@
-import { TextareaAutosize } from "@mui/material";
 import { useFieldArray, useForm } from "react-hook-form";
 import { MdOutlineAdd, MdOutlineDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, infoSelector, removeItem, updateInfo, updateInfoServer } from "../../redux/infoSlide";
+import { addItem, infoSelector, removeItem, updateInfo } from "../../redux/infoSlide";
 
 const Form = ({ name, title, formFields }) => {
   const dispatch = useDispatch();
   const info = useSelector(infoSelector);
-  const { register, control, handleSubmit, watch } = useForm({ defaultValues: { [name]: info[name]?.items } });
+  const { register, control, handleSubmit, watch } = useForm({ defaultValues: { [name]: info.data[name]?.items } });
   const { fields, append, remove } = useFieldArray({ control, name });
   const onSubmit = () => {};
   return (
@@ -45,14 +44,14 @@ const Form = ({ name, title, formFields }) => {
               {formField.type === "text" ? (
                 <input
                   className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-                  {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name]?.items[index][formField.field],
+                  {...register(`data.${name}.${index}.${formField.field}`, {
+                    value: info.data[name]?.items[index][formField.field],
                     onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
-                          path: `${name}.items[${index}].${formField.field}`,
-                          value: watch(`${name}.${index}.${formField.field}`),
+                          path: `data.${name}.items[${index}].${formField.field}`,
+                          value: watch(`data.${name}.${index}.${formField.field}`),
                         })
                       );
                     },
@@ -62,14 +61,14 @@ const Form = ({ name, title, formFields }) => {
               ) : formField.type === "date" ? (
                 <input
                   className="text-slate-700 flex-grow border-b-2 w-full focus:outline-none"
-                  {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name]?.items[index][formField.field],
+                  {...register(`data.${name}.${index}.${formField.field}`, {
+                    value: info.data[name]?.items[index][formField.field],
                     onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
-                          path: `${name}.items[${index}].${formField.field}`,
-                          value: watch(`${name}.${index}.${formField.field}`),
+                          path: `data.${name}.items[${index}].${formField.field}`,
+                          value: watch(`data.${name}.${index}.${formField.field}`),
                         })
                       );
                     },
@@ -77,22 +76,21 @@ const Form = ({ name, title, formFields }) => {
                   type="date"
                 />
               ) : (
-                <TextareaAutosize
+                <textarea
                   className="text-slate-700 flex-grow p-2 border-2 w-full focus:outline-none"
-                  {...register(`${name}.${index}.${formField.field}`, {
-                    value: info[name]?.items[index][formField.field],
+                  {...register(`data.${name}.${index}.${formField.field}`, {
+                    value: info.data[name]?.items[index][formField.field],
                     onChange: () => {
                       dispatch(
                         updateInfo({
                           name,
-                          path: `${name}.items[${index}].${formField.field}`,
-                          value: watch(`${name}.${index}.${formField.field}`),
+                          path: `data.${name}.items[${index}].${formField.field}`,
+                          value: watch(`data.${name}.${index}.${formField.field}`),
                         })
                       );
                     },
                   })}
                   placeholder={formField.placeholder}
-                  minRows={5}
                 />
               )}
             </div>

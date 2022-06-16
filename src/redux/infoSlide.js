@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { set } from "lodash";
 
-export const getInfoServer = createAsyncThunk("info/getInfo", async (thunkAPI) => {
+export const getInfoServer = createAsyncThunk("info/getInfoServer", async (thunkAPI) => {
   try {
     const URL = process.env.REACT_APP_BACKEND_URL;
     console.log("Fetch", `${URL}/users/get_info`);
@@ -16,7 +16,6 @@ export const getInfoServer = createAsyncThunk("info/getInfo", async (thunkAPI) =
     let data = await response.json();
 
     if (response.status === 200) {
-      console.log(data);
       return data;
     } else {
       return thunkAPI.rejectWithValue(data);
@@ -27,9 +26,8 @@ export const getInfoServer = createAsyncThunk("info/getInfo", async (thunkAPI) =
   }
 });
 
-export const updateInfoServer = createAsyncThunk("info/updateInfo", async ({ info }, thunkAPI) => {
+export const updateInfoServer = createAsyncThunk("info/updateInfoServer", async ({ info }, thunkAPI) => {
   try {
-    console.log(info);
     const URL = process.env.REACT_APP_BACKEND_URL;
     const response = await fetch(`${URL}/users/update_info`, {
       method: "POST",
@@ -43,8 +41,6 @@ export const updateInfoServer = createAsyncThunk("info/updateInfo", async ({ inf
       }),
     });
     let data = await response.json();
-    console.log(data);
-
     if (response.status === 200) {
       return data;
     } else {
@@ -59,67 +55,62 @@ export const updateInfoServer = createAsyncThunk("info/updateInfo", async ({ inf
 const infoSlide = createSlice({
   name: "info",
   initialState: {
-    isFetching: false,
-    isSuccess: false,
-    isError: false,
-    errorMessage: "",
-    work: { items: [{}] },
-    education: { items: [{}] },
-    skills: { items: [{}] },
-    hobbies: { items: [{}] },
-    projects: { items: [{}] },
-    awards: { items: [{}] },
-    certifications: { items: [{}] },
-    results: { items: [{}] },
-    publications: { items: [{}] },
-    activities: { items: [{}] },
+    loading: "idle",
+    data: {
+      work: { items: [{}] },
+      education: { items: [{}] },
+      skills: { items: [{}] },
+      hobbies: { items: [{}] },
+      projects: { items: [{}] },
+      awards: { items: [{}] },
+      certifications: { items: [{}] },
+      results: { items: [{}] },
+      publications: { items: [{}] },
+      activities: { items: [{}] },
+    },
   },
   reducers: {
     clearState: (state) => {
-      state.isError = false;
-      state.isSuccess = false;
-      state.isFetching = false;
+      state.loading = "idle";
     },
     updateInfo: (state, { payload }) => {
       set(state, payload.path, payload.value);
     },
     addItem: (state, { payload }) => {
-      state[payload]?.items.push({});
+      state.data[payload].items.push({});
     },
     removeItem: (state, { payload }) => {
-      state[payload.name].items = state[payload.name].items.splice(payload.index, 1);
+      state.data[payload.name].items = state.data[payload.name].items.splice(payload.index, 1);
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getInfoServer.fulfilled, (state, { payload }) => {
       console.log("Payload: ", payload);
-      if (payload === {}) {
+      for (const key in payload) {
+        if (Object.hasOwnProperty.call(payload, key)) {
+          const element = payload[key];
+          if (element !== {}) {
+            set(state.data, key, payload[key]);
+          }
+        }
       }
-      state.work = payload.work;
-      state.education = payload.education;
-      state.isError = false;
-      state.isSuccess = true;
-      state.isFetching = false;
+      state.loading = "idle";
     });
     builder.addCase(getInfoServer.pending, (state) => {
-      state.isFetching = true;
+      state.loading = "pending";
     });
     builder.addCase(getInfoServer.rejected, (state, { payload }) => {
-      state.isFetching = false;
-      state.isError = true;
+      state.loading = "failed";
       state.errorMessage = payload.message;
     });
     builder.addCase(updateInfoServer.pending, (state) => {
-      state.isFetching = true;
+      state.loading = "pending";
     });
-    builder.addCase(updateInfoServer.fulfilled, (state, { payload }) => {
-      state.isSuccess = true;
-      console.log(payload);
+    builder.addCase(updateInfoServer.fulfilled, (state) => {
+      state.loading = "succeeded";
     });
     builder.addCase(updateInfoServer.rejected, (state, { payload }) => {
-      state.isFetching = false;
-      state.isError = true;
-      state.errorMessage = payload.message;
+      state.loading = "failed";
     });
   },
 });

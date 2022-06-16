@@ -4,11 +4,10 @@ import {
   MdOutlineEmojiEvents,
   MdOutlineFactCheck,
   MdOutlineLocalLibrary,
-  MdOutlinePerson,
-  MdOutlineWaterDrop,
   MdOutlinePsychology,
   MdOutlineSchool,
   MdOutlineSportsEsports,
+  MdOutlineWaterDrop,
   MdWorkOutline,
 } from "react-icons/md";
 
