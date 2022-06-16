@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
-import { checkLoggedIn, fetchUserByToken, getInfo, userSelector } from "../redux/userSlice";
+import { checkLoggedIn, fetchUserByToken, userSelector } from "../redux/userSlice";
+import { getInfoServer } from "../redux/infoSlide";
 import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
 import VerifiedPage from "./auth/VerifiedPage";
 import VerifyEmail from "./auth/VerifyEmail";
+import Unauthorized from "./auth/Unauthorized";
 import Home from "./Home";
 import MyCv from "./MyCv";
 import Profile from "./Profile";
@@ -20,10 +22,13 @@ function App() {
 
   useEffect(() => {
     dispatch(checkLoggedIn());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isLoggedIn) {
-      dispatch(getInfo());
+      dispatch(getInfoServer());
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, dispatch]);
 
   return (
     <Routes>
@@ -45,6 +50,7 @@ function App() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="verify-email" element={<VerifyEmail />}/>
         <Route path="verified-page/:token" element={<VerifiedPage />}/>
+        <Route path="unauthorized" element={<Unauthorized />} />
       </Route>
     </Routes>
   );

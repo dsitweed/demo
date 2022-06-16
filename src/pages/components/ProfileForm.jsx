@@ -7,9 +7,7 @@ function ProfileForm() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = () => {};
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col"}>
       <fieldset className="bg-white rounded-lg p-4 mb-4 flex flex-col md:grid md:grid-cols-2 gap-4 gap-x-10">
@@ -25,9 +23,7 @@ function ProfileForm() {
             })}
             placeholder="Vui lòng điền họ và tên"
           />
-          {errors?.email ? (
-            <span className="text-red-600">Xin hãy nhập họ và tên của bạn</span>
-          ) : null}
+          {errors?.email ? <span className="text-red-600">Xin hãy nhập họ và tên của bạn</span> : null}
         </div>
         {/* Địa chỉ */}
         <div className="w-full mb-4">
@@ -83,13 +79,6 @@ function ProfileForm() {
           />
         </div>
       </fieldset>
-
-      <button
-        type="submit"
-        className="my-5 px-6 btn-contained col-span-2 mx-auto"
-      >
-        Cập nhật
-      </button>
     </form>
   );
 }
