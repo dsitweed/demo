@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { clearState, signInUser, userSelector } from "../../redux/userSlice";
+import { clearState, forgetPassword, signInUser, userSelector } from "../../redux/userSlice";
 import LOGO from "../../resources/images/logo.png";
 
 function ForgotPassword() {
@@ -15,17 +15,28 @@ function ForgotPassword() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const { isFetching, isSuccess, isError, errorMessage } =
+  const { isFetching, isSuccess, isError, errorMessage, forgetPasswordToken, isVerifyEmail } =
     useSelector(userSelector);
 
   const onSubmit = (data) => {
-    dispatch(signInUser(data));
+    dispatch(forgetPassword(data));
   };
+
+  useEffect(() => {
+    if (forgetPasswordToken !== null) {
+      navigate("/auth/verify-email");
+    }
+    if (isVerifyEmail === true) {
+      navigate("/");
+    }
+  }, [forgetPasswordToken, isVerifyEmail]);
+
   useEffect(() => {
     return () => {
       dispatch(clearState());
     };
   }, [dispatch]);
+
   useEffect(() => {
     if (isError) {
       console.log(errorMessage);

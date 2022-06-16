@@ -244,7 +244,7 @@ export const forgetPassword = createAsyncThunk(
 
 export const checkFpsSession = createAsyncThunk(
   "users/checkFpsSession",
-  async ({ token },thunkAPI) => {
+  async ( token ,thunkAPI) => {
     try {
       const URL = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${URL}/users/check_fps_session`, {
@@ -258,7 +258,7 @@ export const checkFpsSession = createAsyncThunk(
         }),
       });
       let data = await response.json();
-      console.log(data);
+      console.log("Response",data);
 
       if (response.status === 200) {
         return data;
@@ -302,7 +302,7 @@ export const changeForgottenPwd = createAsyncThunk(
     }
   }
 );
-
+  
 /*-----------------------------------------------------------------------------------*/ 
 
 export const userSlice = createSlice({
@@ -310,6 +310,7 @@ export const userSlice = createSlice({
   initialState: {
     email: "",
     fullName: "",
+    image:"",
     cvDatas: [],
     infoData: {
       profile: {},
@@ -324,6 +325,8 @@ export const userSlice = createSlice({
     isFetching: false,
     isSuccess: false,
     isError: false,
+    isVerifyEmail: false,
+    forgetPasswordToken: null,
     errorMessage: "",
   },
   reducers: {
@@ -432,6 +435,65 @@ export const userSlice = createSlice({
       state.isFetching = true;
     });
     builder.addCase(getInfo.rejected, ({payload},state) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
+    // update Info -> need to reload by getInfo
+    builder.addCase(updateInfo.fulfilled, (state, {payload}) => {
+      state.isError = false;
+      state.isSuccess = true;
+      state.isFetching = false;
+    });
+    builder.addCase(updateInfo.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(updateInfo.rejected, ({payload},state) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
+    // forgetPassword
+    builder.addCase(forgetPassword.fulfilled, (state, {payload}) => {
+      state.forgetPasswordToken = payload.FPStoken;
+      state.isError = false;
+      state.isSuccess = true;
+      state.isFetching = false;
+    });
+    builder.addCase(forgetPassword.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(forgetPassword.rejected, ({payload},state) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
+    //checkFpsSession
+    builder.addCase(checkFpsSession.fulfilled, (state, {payload}) => {
+      state.isVerifyEmail = true;
+      state.isError = false;
+      state.isSuccess = true;
+      state.isFetching = false;
+    });
+    builder.addCase(checkFpsSession.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(checkFpsSession.rejected, ({payload},state) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    });
+    // change password for forget password
+    builder.addCase(changeForgottenPwd.fulfilled, (state, {payload}) => {
+      state.isVerifyEmail = false;
+      state.isError = false;
+      state.isSuccess = true;
+      state.isFetching = false;
+    });
+    builder.addCase(changeForgottenPwd.pending, (state) => {
+      state.isFetching = true;
+    });
+    builder.addCase(changeForgottenPwd.rejected, ({payload},state) => {
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;

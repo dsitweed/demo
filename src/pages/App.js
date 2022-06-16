@@ -7,6 +7,8 @@ import { getCookie } from "../utils";
 import ForgotPassword from "./auth/ForgotPassword";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
+import VerifiedPage from "./auth/VerifiedPage";
+import VerifyEmail from "./auth/VerifyEmail";
 import Home from "./Home";
 import MyCv from "./MyCv";
 import Profile from "./Profile";
@@ -41,6 +43,8 @@ function App() {
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="verify-email" element={<VerifyEmail />}/>
+        <Route path="verified-page/:token" element={<VerifiedPage />}/>
       </Route>
     </Routes>
   );
