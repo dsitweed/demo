@@ -46,7 +46,7 @@ function Header() {
 
   return (
     <>
-      <header className="sticky h-16 top-0 left-0 right-0 z-50 bg-white border-slate-100">
+      <header className="sticky h-16 top-0 left-0 right-0 z-50 shadow bg-white border-slate-100">
         <div className="mx-auto my-1 px-2 sm:px-6">
           <div className="flex justify-between items-center">
             <Link to={"/"} className="nav-link">
